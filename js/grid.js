@@ -40,6 +40,32 @@ Grid.prototype.availableCells = function () {
     return avail;
   }
 }
+// 获取单行/列可用单元格
+Grid.prototype.availableCellInline = function (position, end, line) {
+  var posY = position.posY;
+  var posX = position.posX;
+  var availableCellInline = {};
+  if (line === 'row') {
+    for (let x=end; x>posX; x--) {
+      if (!this.cells[posY][x]) {
+        return availableCellInline = {
+          posX: x,
+          posY: posY
+        }
+      }
+    }
+  } else {
+    for (let y=end; y>posY; y--) {
+      if (!this.cells[posX][y]) {
+        return availableCellInline = {
+          posX: posX,
+          posY: y
+        }
+      }
+    }
+  }
+}
+// 更新栅格状态
 Grid.prototype.updataCell = function (type, position) {
   var posX = position.posX;
   var posY = position.posY;
@@ -52,7 +78,3 @@ Grid.prototype.updataCell = function (type, position) {
     }
   }
 }
-var grid = new Grid(4);
-grid.initGrid();
-console.log(grid.cells);
-console.log(grid.availableCells());

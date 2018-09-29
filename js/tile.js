@@ -11,5 +11,3 @@ Tile.prototype.createTile = function () {
   tile.className = 'object';
   container.appendChild(tile);
 }
-var tile = new Tile({}, 2);
-tile.createTile();
