@@ -32,7 +32,8 @@ Grid.prototype.availableCells = function () {
         if (!item) {
           avail.push({
             posX: posX,
-            posY: posY
+            posY: posY,
+            value: 2
           })
         }
       })
@@ -41,32 +42,41 @@ Grid.prototype.availableCells = function () {
   }
 }
 // 获取单行/列可用单元格
-Grid.prototype.availableCellInline = function (position, end, line) {
-  var posY = position.posY;
-  var posX = position.posX;
-  var availableCellInline = {};
+Grid.prototype.availableCellInline = function (cell, end, line) {
+  var posY = cell.posY;
+  var posX = cell.posX;
+  var value = cell.value;
+  var availableCellInline = null;
+
   if (line === 'row') {
-    for (let x=end; x>posX; x--) {
-      if (!this.cells[posY][x]) {
-        return availableCellInline = {
+    for (let x=posX+1; x<end+1; x++) {
+      if (!this.cells[posY][x] || this.cells[posY][x].value === value) {
+        availableCellInline = {
           posX: x,
-          posY: posY
-        }
+          posY: posY,
+          value: !this.cells[posY][x] ? value : value * 2
+        };
+      } else {
+        break;
       }
     }
-  } else {
-    for (let y=end; y>posY; y--) {
-      if (!this.cells[posX][y]) {
-        return availableCellInline = {
-          posX: posX,
-          posY: y
-        }
+  } else if (line === 'col') {
+    for (let y=posY+1; y<end+1; y++) {
+      if (!this.cells[y][posX] || this.cells[y][posX].value === value) {
+        availableCellInline = {
+          posX: x,
+          posY: posY,
+          value: !this.cells[posY][x] ? value : value * 2
+        };
+      } else {
+        break;
       }
     }
   }
+  return availableCellInline;
 }
 // 更新栅格状态
-Grid.prototype.updataCell = function (type, position) {
+Grid.prototype.updataCell = function (type, position, value) {
   var posX = position.posX;
   var posY = position.posY;
   if (type === 'remove') {
@@ -74,7 +84,8 @@ Grid.prototype.updataCell = function (type, position) {
   } else if (type === 'fill') {
     this.cells[posY][posX] = {
       posX: posX,
-      posY: posY
+      posY: posY,
+      value: value
     }
   }
 }
