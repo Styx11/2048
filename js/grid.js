@@ -50,7 +50,9 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
   var availableCellInline = null;
 
   if (line === 'row') {
-    for (let x=posX+1; x<end+1; x++) {
+    var x = posX < end ? posX+1 : posX-1;
+    end = posX < end ? end+1 : end-1;
+    while (x !== end) {
       if (!this.cells[posY][x] || this.cells[posY][x].value === value) {
         availableCellInline = {
           posX: x,
@@ -60,9 +62,12 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
       } else {
         break;
       }
+      posX < end ? x++ : x--;
     }
   } else if (line === 'col') {
-    for (let y=posY+1; y<end+1; y++) {
+    var y = posY < end ? posY+1 : posY-1;
+    var newEnd = posY < end ? end+1 : end-1;
+    while (y !== newEnd) {
       if (!this.cells[y][posX] || this.cells[y][posX].value === value) {
         availableCellInline = {
           posX: posX,
@@ -72,6 +77,7 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
       } else {
         break;
       }
+      posY < end ? y++ : y--;
     }
   }
   return availableCellInline;
@@ -88,5 +94,47 @@ Grid.prototype.updataCell = function (type, position, value) {
       posY: posY,
       value: value
     }
+  }
+}
+// 移动栅格
+Grid.prototype.moveCells = function (key) {
+  var that = this;
+  var movingCells = [];
+  var deletingCells = [];
+
+  if (key === 0 || key === 2) {
+    var direct = !key ? 0 : 3;
+    for (let x=0; x<this.size; x++) {
+      for (let y=0; y<this.size; y++) {
+        if (this.cells[y][x] !== null) {
+          var avail = this.availableCellInline({posX: x, posY: y, value: this.cells[y][x].value}, direct, 'row');
+          if (avail !== null) {
+            movingCells.push(avail);
+            deletingCells.push(this.cells[y][x]);
+            this.updataCell('remove', {posX: x, posY: y});
+            this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value);
+          }
+        }
+      }
+    }
+  } else if (key === 1 || key === 3) {
+    var direct = key === 1 ? 0 : 3;
+    for (let y=0; y<this.size; y++) {
+      for (let x=0; x<this.size; x++) {
+        if (this.cells[y][x] !== null) {
+          var avail = this.availableCellInline({posX: x, posY: y, value: this.cells[y][x].value}, direct, 'col');
+          if (avail !== null) {
+            movingCells.push(avail);
+            deletingCells.push(this.cells[y][x]);
+            this.updataCell('remove', {posX: x, posY: y});
+            this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value);
+          }
+        }
+      }
+    }
+  }
+  return {
+    movingCells: movingCells,
+    deletingCells: deletingCells
   }
 }
