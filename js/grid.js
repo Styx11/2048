@@ -64,9 +64,9 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
     for (let y=posY+1; y<end+1; y++) {
       if (!this.cells[y][posX] || this.cells[y][posX].value === value) {
         availableCellInline = {
-          posX: x,
-          posY: posY,
-          value: !this.cells[posY][x] ? value : value * 2
+          posX: posX,
+          posY: y,
+          value: !this.cells[y][posX] ? value : value * 2
         };
       } else {
         break;
