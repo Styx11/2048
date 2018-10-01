@@ -1,6 +1,7 @@
 function Grid (size) {
   this.size = size;
   this.cells = [];
+  this.initGrid();
 }
 
 // 重置或初始化栅格
@@ -16,7 +17,7 @@ Grid.prototype.initGrid = function () {
   this.cells = cells;
 }
 // 随机获取单元格
-Grid.prototype.randomCells = function () {
+Grid.prototype.randomCell = function () {
   var availableCells = this.availableCells();
   var availLength = availableCells.length;
   var index = Math.floor(Math.random() * availLength);
@@ -55,7 +56,7 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
           posX: x,
           posY: posY,
           value: !this.cells[posY][x] ? value : value * 2
-        };
+        }
       } else {
         break;
       }
@@ -67,7 +68,7 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
           posX: posX,
           posY: y,
           value: !this.cells[y][posX] ? value : value * 2
-        };
+        }
       } else {
         break;
       }
