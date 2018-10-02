@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
 }
-.container {
+#container {
   position: relative;
   overflow: hidden;
   width: 31em;

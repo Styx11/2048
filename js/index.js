@@ -16,11 +16,19 @@ keyManager.on("move", function (key) {
         var moveCells = grid.moveCells(key);
         var movingCells = moveCells.movingCells;
         var deletingCells = moveCells.deletingCells;
-        for (let i=0; i<deletingCells.length; i++) {
-          tile.delTile(deletingCells[i]);
-        }
-        for (let i=0; i<movingCells.length; i++) {
-          tile.createTile(movingCells[i], movingCells[i].value);
+        // for (let i=0; i<deletingCells.length; i++) {
+        //   tile.delTile(deletingCells[i]);
+        // }
+        tile.delTile();
+        // for (let i=0; i<movingCells.length; i++) {
+        //   tile.createTile(movingCells[i], movingCells[i].value);
+        // }
+        for (let y=0; y<grid.size; y++) {
+          for (let x=0; x<grid.size; x++) {
+            if (grid.cells[y][x] !== null) {
+              tile.createTile({posX: x, posY: y}, grid.cells[y][x].value);
+            }
+          }
         }
         tile.createTile(randomCell, randomCell.value);
         grid.updataCell('fill', randomCell, randomCell.value);
