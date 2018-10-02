@@ -3,7 +3,7 @@ var tile = new Tile();
 var KeyboardManager = new KeyboardManager();
 
 // console.log(grid.availableCellInline({posX: 1, posY: 3, value: 2}, 0, 'col'));
-
+var score = 0;
 KeyboardManager.on("move", function (key) {
   if (key === 0 || key === 2 || key === 1 || key === 3) {
     var randomCell = grid.randomCell();
@@ -12,6 +12,8 @@ KeyboardManager.on("move", function (key) {
         tile.createTile(randomCell, randomCell.value);
         grid.updataCell('fill', randomCell, randomCell.value);
       } else {
+        score += 2;
+        tile.scoreTile.innerHTML = score;
         var redrawCells = grid.moveCells(key);
         tile.delTile();
         for (let i=0; i<redrawCells.length; i++) {

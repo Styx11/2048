@@ -30,3 +30,34 @@
   background-color: rgb(236, 228, 216);
   border-radius: 8px;
 }
+#title {
+  position: absolute;
+  top: 2%;
+  left: 26.5%;
+  font-size: 6em;
+  font-weight: bolder;
+  color: rgb(118, 110, 102);
+}
+#scorePane {
+  position: absolute;
+  width: 8em;
+  height: 3.8em;
+  top: 5%;
+  right: 26.5%;
+  padding: .2rem;
+  color: #fff;
+  text-align: center;
+  font-weight: bolder;
+  border-radius: 6px;
+  background-color: rgb(185, 173, 160);
+}
+#scoreTitle {
+  margin-top: .2rem;
+  color: rgb(236, 228, 216);
+  font-size: .9em;
+}
+#score {
+  position: relative;
+  bottom: -.2rem;
+  font-size: 1.5em;
+}
