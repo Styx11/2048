@@ -1,9 +1,19 @@
 var grid = new Grid(4);
 var tile = new Tile();
 var KeyboardManager = new KeyboardManager();
-
-// console.log(grid.availableCellInline({posX: 1, posY: 3, value: 2}, 0, 'col'));
+var start = function () {
+  var randomCell = grid.randomCell();
+  tile.createTile(randomCell, randomCell.value);
+  grid.updataCell('fill', randomCell, randomCell.value);
+}
 var score = 0;
+
+start();
+tile.newGame.onclick = function () {
+  tile.delTile();
+  grid.initGrid();
+  start();
+}
 KeyboardManager.on("move", function (key) {
   if (key === 0 || key === 2 || key === 1 || key === 3) {
     var randomCell = grid.randomCell();
@@ -12,17 +22,16 @@ KeyboardManager.on("move", function (key) {
         tile.createTile(randomCell, randomCell.value);
         grid.updataCell('fill', randomCell, randomCell.value);
       } else {
-        score += 2;
-        tile.scoreTile.innerHTML = score;
-        var redrawCells = grid.moveCells(key);
-        tile.delTile();
-        for (let i=0; i<redrawCells.length; i++) {
+        var redrawCells = grid.moveCells(key);// 移动
+        if (grid.score) {// 记录分数
+          tile.scoreTile.innerHTML = parseInt(tile.scoreTile.innerHTML) + grid.score;
+        }
+        tile.delTile();// 删除单元格
+        for (let i=0; i<redrawCells.length; i++) {// 创建单元格
           tile.createTile(redrawCells[i], redrawCells[i].value);
         }
-        randomCell = grid.randomCell();
-        tile.createTile(randomCell, randomCell.value);
-        grid.updataCell('fill', randomCell, randomCell.value);
-        console.log(grid.cells);
+        start();
+        grid.score = 0;// 重置分数ßß
       }
     }
   }

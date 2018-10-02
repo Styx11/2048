@@ -9,11 +9,17 @@
 </head>
 <body>
   <div class="main">
-    <div id="title">2048</div>
-    <div id="scorePane">
-      <div id="scoreTitle">SCORE</div>
-      <div id="score">0</div>
+    <div class="game-title">2048</div>
+    <div class="game-pane scoreNow">
+      <div class="scoreTitle">SCORE</div>
+      <div id="score" class="score">0</div>
     </div>
+    <div class="game-pane scoreBest">
+      <div class="scoreTitle">BEST</div>
+      <div id="best" class="score">0</div>
+    </div>
+    <p class="game-info">Join the numbers and get to the <strong class="info-strong">2048 tile!</strong></p>
+    <div id="game-newGame">New Game</div>
     <div id="container"></div>
   </div>
   <script src="./js/grid.js"></script>

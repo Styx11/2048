@@ -1,4 +1,5 @@
 function Grid (size) {
+  this.score = 0;
   this.size = size;
   this.cells = [];
   this.initGrid();
@@ -58,7 +59,8 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
           posX: x,
           posY: posY,
           value: !this.cells[posY][x] ? value : value * 2
-        }
+        }// 记录分数
+        this.score += !this.cells[posY][x] ? 0 : value * 2;
       } else {
         break;
       }
@@ -74,6 +76,7 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
           posY: y,
           value: !this.cells[y][posX] ? value : value * 2
         }
+        this.score += !this.cells[y][posX] ? 0 : value * 2;
       } else {
         break;
       }
