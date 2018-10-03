@@ -1,3 +1,6 @@
+body {
+  background-color: rgb(250, 248, 240);
+}
 .main {
   position: relative;
   margin: 0 auto;
@@ -20,13 +23,15 @@
 .tile {
   display: inline-block;
   position: absolute;
+  z-index: 99;
   width: 20.1%;
   height: 20.1%;
   line-height: 190%;
   margin: 3.5%;
   margin-right: 0;
-  color: #fff;
-  font-size: 3.5em;
+  color: rgb(118, 110, 102);
+  font-size: 3.2em;
+  font-weight: bold;
   text-align: center;
   border-collapse: collapse;
   background-color: rgb(236, 228, 216);
