@@ -19,7 +19,7 @@ Grid.prototype.initGrid = function () {
 }
 // 随机获取单元格
 Grid.prototype.randomCell = function () {
-  var availableCells = this.availableCells();
+  var availableCells = this.availableCells().avail;
   var availLength = availableCells.length;
   var index = Math.floor(Math.random() * availLength);
   var randomCell = availableCells[index];
@@ -29,6 +29,7 @@ Grid.prototype.randomCell = function () {
 Grid.prototype.availableCells = function () {
   if (this.cells.length) {
     var avail = [];
+    var unavail = [];
     this.cells.forEach(function (items, posY) {
       items.forEach(function (item, posX) {
         if (!item) {
@@ -37,10 +38,15 @@ Grid.prototype.availableCells = function () {
             posY: posY,
             value: 2
           })
+        } else {
+          unavail.push(item)
         }
       })
     })
-    return avail;
+    return {
+      avail: avail,
+      unavail: unavail
+    };
   }
 }
 // 获取单行/列可用单元格
