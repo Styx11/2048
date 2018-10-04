@@ -14,12 +14,14 @@ function KeyboardManager () {
   this.end = {};
   this.listen();
 }
+// 添加事件监听
 KeyboardManager.prototype.on = function (event, callback) {
   if (!this.events[event]) {
     this.events[event] = [];
   }
   this.events[event].push(callback);
 }
+// 触发监听事件
 KeyboardManager.prototype.emit = function (event, data) {
   var callbacks = this.events[event];
   if (callbacks) {
@@ -52,6 +54,7 @@ KeyboardManager.prototype.listen = function () {
   })
 
   container.addEventListener('touchstart', function (event) {
+    // 之后需对兼容性进行升级
     that.start.x = event.touches[0].clientX;
     that.start.y = event.touches[0].clientY;
     eventPreventDefault(event);
