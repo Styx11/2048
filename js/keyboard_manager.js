@@ -1,5 +1,17 @@
+function eventPreventDefault (event) {
+  // 针对69版本以上Chrome的默认行为禁用
+  if (event.cancelable) {
+    // 判断默认行为是否已经被禁用
+    if (!event.defaultPrevented) {
+      event.preventDefault();
+    }
+  }
+}
+
 function KeyboardManager () {
   this.events = {};
+  this.start = {};
+  this.end = {};
   this.listen();
 }
 KeyboardManager.prototype.on = function (event, callback) {
@@ -18,6 +30,7 @@ KeyboardManager.prototype.emit = function (event, data) {
 }
 KeyboardManager.prototype.listen = function () {
   var that = this;
+  var container = document.getElementById('container');
   var map = {
     37: 0, //Left Arrow
     38: 1, //Up Arrow
@@ -33,8 +46,53 @@ KeyboardManager.prototype.listen = function () {
     var modifier = event.altKey || event.shiftKey || event.ctrlKey || event.metaKey;
     var mapped = map[event.keyCode];
     if (!modifier) {
-      event.preventDefault();
+      eventPreventDefault(event);
       that.emit("move", mapped);
     }
+  })
+
+  container.addEventListener('touchstart', function (event) {
+    that.start.x = event.touches[0].clientX;
+    that.start.y = event.touches[0].clientY;
+    eventPreventDefault(event);
+  })
+  container.addEventListener('touchmove', function (event) {
+    eventPreventDefault(event);
+  })
+  container.addEventListener('touchend', function (event) {
+    // 手指都离开屏幕之后，touches和targetTouches中将不会再有值，changedTouches还会有一个值，
+    // 此值为最后一个离开屏幕的手指的接触点。
+    that.end.x = event.changedTouches[0].clientX;
+    that.end.y = event.changedTouches[0].clientY;
+    var y = parseInt(that.start.y - that.end.y);
+    var x = parseInt(that.end.x - that.start.x);
+
+    if (x !== 0) {
+      var tanVal = y / x;
+      //Touch Left
+      if ((x < 0 && y < 0 && tanVal < 1) || (x < 0 && y > 0 && tanVal > -1)) {
+        that.emit("touch", 0);
+      }
+      // Touch Right
+      if ((x > 0 && y < 0 && tanVal > -1) || (x > 0 && y > 0 && tanVal < 1)) {
+        that.emit("touch", 2);
+      }
+      // Touch Up
+      if ((x < 0 && y > 0 && tanVal < -1) || (x > 0 && y > 0 && tanVal > 1)) {
+        that.emit("touch", 1);
+      }
+      // Touch Down
+      if ((x < 0 && y < 0 && tanVal > 1) || (x > 0 && y < 0 && tanVal < -1)) {
+        that.emit("touch", 3);
+      }
+    } else {
+      if (y < 0) {// Touch Up
+        that.emit("touch", 1);
+      }
+      if (y > 0){// Touch Down
+        that.emit("touch", 3);
+      }
+    }
+    eventPreventDefault(event);
   })
 }

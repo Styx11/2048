@@ -13,6 +13,29 @@ var start = function () {// 基本开始
   tile.bestTile.innerHTML  = bestScore;// DOM对象只需引用一次
   tile.scoreTile.innerHTML = previousScore;
 }
+var keyCallback = function (key) {// 操作触发事件
+  if (key === 0 || key === 2 || key === 1 || key === 3) {
+    var randomCell = grid.randomCell();
+    if (randomCell !== undefined) {
+      var redrawCells = grid.moveCells(key);// 移动
+      if (grid.score) {// 记录分数
+        previousScore += grid.score;
+        if (previousScore > bestScore) {// 设置最高分
+          bestScore = previousScore;
+          localStorageManager.setBestScore(previousScore);
+        }
+      }
+      tile.delTile();// 删除单元格
+      for (let i=0; i<redrawCells.length; i++) {// 创建单元格
+        tile.createTile(redrawCells[i], redrawCells[i].value);
+      }
+      start();
+      localStorageManager.setGameState('gameState', grid.cells);// 记录状态
+      localStorageManager.setGameState('gameScore', previousScore);
+      grid.score = 0;// 重置分数
+    }
+  }
+}
 
 if (previousState) {// 是否应用先前状态
   grid.cells = previousState;
@@ -35,26 +58,5 @@ tile.newGame.onclick = function () {
   start();
   localStorageManager.setGameState(grid.cells);
 }
-KeyboardManager.on("move", function (key) {
-  if (key === 0 || key === 2 || key === 1 || key === 3) {
-    var randomCell = grid.randomCell();
-    if (randomCell !== undefined) {
-      var redrawCells = grid.moveCells(key);// 移动
-      if (grid.score) {// 记录分数
-        previousScore += grid.score;
-        if (previousScore > bestScore) {// 设置最高分
-          bestScore = previousScore;
-          localStorageManager.setBestScore(previousScore);
-        }
-      }
-      tile.delTile();// 删除单元格
-      for (let i=0; i<redrawCells.length; i++) {// 创建单元格
-        tile.createTile(redrawCells[i], redrawCells[i].value);
-      }
-      start();
-      localStorageManager.setGameState('gameState', grid.cells);// 记录状态
-      localStorageManager.setGameState('gameScore', previousScore);
-      grid.score = 0;// 重置分数
-    }
-  }
-})
+KeyboardManager.on("move", keyCallback);
+KeyboardManager.on("touch", keyCallback);
