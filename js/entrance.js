@@ -8,7 +8,9 @@ var previousScore = localStorageManager.getGameState('gameScore');
 
 var start = function () {// 基本开始
   var randomCell = grid.randomCell();
-  tile.createTile(randomCell, randomCell.value);
+  setTimeout(function () {
+    tile.createTile(randomCell, randomCell.value);
+  }, 400)
   grid.updataCell('fill', randomCell, randomCell.value);
   tile.bestTile.innerHTML  = bestScore;// DOM对象只需引用一次
   tile.scoreTile.innerHTML = previousScore;
@@ -17,7 +19,9 @@ var keyCallback = function (key) {// 操作触发事件
   if (key === 0 || key === 2 || key === 1 || key === 3) {
     var randomCell = grid.randomCell();
     if (randomCell !== undefined) {
-      var redrawCells = grid.moveCells(key);// 移动
+      // var redrawCells = grid.moveCells(key);// 移动
+      var moveCells = grid.moveCells(key);
+      // console.log(moveCells);
       if (grid.score) {// 记录分数
         previousScore += grid.score;
         if (previousScore > bestScore) {// 设置最高分
@@ -25,10 +29,13 @@ var keyCallback = function (key) {// 操作触发事件
           localStorageManager.setBestScore(previousScore);
         }
       }
-      tile.delTile();// 删除单元格
-      for (let i=0; i<redrawCells.length; i++) {// 创建单元格
-        tile.createTile(redrawCells[i], redrawCells[i].value);
-      }
+      // tile.delTile();// 删除单元格
+      moveCells.forEach(function (item) {
+        tile.delTile(item.delCell, item.redrawCell);
+      })
+      // for (let i=0; i<redrawCells.length; i++) {// 创建单元格
+      //   tile.createTile(redrawCells[i], redrawCells[i].value);
+      // }
       start();
       localStorageManager.setGameState('gameState', grid.cells);// 记录状态
       localStorageManager.setGameState('gameScore', previousScore);
