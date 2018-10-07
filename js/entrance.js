@@ -19,9 +19,7 @@ var keyCallback = function (key) {// 操作触发事件
   if (key === 0 || key === 2 || key === 1 || key === 3) {
     var randomCell = grid.randomCell();
     if (randomCell !== undefined) {
-      // var redrawCells = grid.moveCells(key);// 移动
-      var moveCells = grid.moveCells(key);
-      // console.log(moveCells);
+      var moveCells = grid.moveCells(key);// 移动
       if (grid.score) {// 记录分数
         previousScore += grid.score;
         if (previousScore > bestScore) {// 设置最高分
@@ -29,24 +27,29 @@ var keyCallback = function (key) {// 操作触发事件
           localStorageManager.setBestScore(previousScore);
         }
       }
-      // tile.delTile();// 删除单元格
       moveCells.forEach(function (item) {
-        tile.delTile(item.delCell, item.redrawCell);
+          tile.moveTile(item.delCell, item.redrawCell);
       })
-      // for (let i=0; i<redrawCells.length; i++) {// 创建单元格
-      //   tile.createTile(redrawCells[i], redrawCells[i].value);
-      // }
-      start();
-      localStorageManager.setGameState('gameState', grid.cells);// 记录状态
-      localStorageManager.setGameState('gameScore', previousScore);
-      grid.score = 0;// 重置分数
+      setTimeout(function () {
+        tile.delTile();
+        var drawCells = grid.availableCells().unavail;
+        for (let i=0; i<drawCells.length; i++) {
+          tile.createTile(drawCells[i], drawCells[i].value);
+        }
+        start();
+        console.log(grid.cells);
+        console.log(moveCells);
+        localStorageManager.setGameState('gameState', grid.cells);// 记录状态
+        localStorageManager.setGameState('gameScore', previousScore);
+        grid.score = 0;// 重置分数
+      }, 300)// 等待移动动画
     }
   }
 }
 
 if (previousState) {// 是否应用先前状态
   grid.cells = previousState;
-  var drawCells = grid.availableCells().unavail;
+  var drawCells = grid.availableCells().unavail;// 获取应该绘制的单元格
   for (let i=0; i<drawCells.length; i++) {
     tile.createTile(drawCells[i], drawCells[i].value);
   }

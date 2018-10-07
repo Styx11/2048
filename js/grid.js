@@ -1,5 +1,5 @@
 function Grid (size) {
-  this.score = 0;
+  this.score = size ? size : 0;
   this.size = size;
   this.cells = [];
   this.initGrid();
@@ -108,7 +108,6 @@ Grid.prototype.updataCell = function (type, position, value) {
 // 移动栅格
 Grid.prototype.moveCells = function (key) {
   var moveCells = [];
-  // var redrawCells = [];
   // 判断从哪个方向开始移动
   var start = key===2 || key===3 ? 3 : 0;
   var end = key===2 || key===3 ? -1 : 4;
@@ -120,17 +119,13 @@ Grid.prototype.moveCells = function (key) {
         if (this.cells[y][start] !== null) {// 获取单方向上单元格可移动的位置
           var avail = this.availableCellInline({posX: start, posY: y, value: this.cells[y][start].value}, direct, 'row');
           if (avail !== null) {
-            // redrawCells.push(avail);
-            moveCells.push({
+            moveCells.push({// 获取应删除单元格与目标单元格
               redrawCell: avail,
               delCell: this.cells[y][start]
             })
             this.updataCell('remove', {posX: start, posY: y});
             this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value);
           }
-          // else {
-          //   redrawCells.push(this.cells[y][start]);// 无可移动单元格也需重绘
-          // }
         }
       }
       start < end ? start++ : start--;
@@ -142,7 +137,6 @@ Grid.prototype.moveCells = function (key) {
         if (this.cells[start][x] !== null) {
           var avail = this.availableCellInline({posX: x, posY: start, value: this.cells[start][x].value}, direct, 'col');
           if (avail !== null) {
-            // redrawCells.push(avail);
             moveCells.push({
               redrawCell: avail,
               delCell: this.cells[start][x]
@@ -150,14 +144,10 @@ Grid.prototype.moveCells = function (key) {
             this.updataCell('remove', {posX: x, posY: start});
             this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value);
           }
-          // else {
-          //   redrawCells.push(this.cells[start][x]);
-          // }
         }
       }
       start < end ? start++ : start--;
     }
   }
-  // return redrawCells;
   return moveCells
 }

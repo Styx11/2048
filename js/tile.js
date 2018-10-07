@@ -14,25 +14,19 @@ Tile.prototype.createTile = function (position, value) {
   this.container.appendChild(newTile);
 }
 // 移除当前瓦片
-Tile.prototype.delTile = function (oldPosition, newPosition) {
-  var that = this;
-  if (!oldPosition || !newPosition) {
+Tile.prototype.delTile = function () {
     while (this.container.hasChildNodes()) {
       this.container.removeChild(this.container.firstChild);
     }
     return;
-  }
+}
+Tile.prototype.moveTile = function (oldPosition, newPosition) {
   var oldClass = 'tile tile-position-' + oldPosition.posY + '-' + oldPosition.posX;
   var newClass = 'tile tile-position-' + newPosition.posY + '-' + newPosition.posX;
   var oldNodes = this.container.childNodes;
-  oldNodes.forEach(function (item, index) {
+  oldNodes.forEach(function (item) {
     if (item.className === oldClass) {
       item.className = newClass;
-      setTimeout(function () {
-        console.log(item);
-        that.createTile(newPosition, newPosition.value);
-        that.container.removeChild(that.container.childNodes[index]);
-      }, 400)
     }
   })
 }

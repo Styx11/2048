@@ -12,7 +12,7 @@ Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互�
 创建一个Grid对象
 
 ## *属性*
-**socre**
+**score**
 
 ---
 - 类型：Number,
@@ -81,7 +81,8 @@ Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互�
 
 ---
 - 参数：{Number} key keyCode,
-- 返回值：无
+- 返回值：
+   - {Array} moveCells 包含一个由移动单元格与目标单元格组成的数组
 - 描述：根据key值移动单元格
 
 ## Tile
@@ -121,7 +122,7 @@ Tile对象是所有DOM对象的操作接口，包括数字砖的创建、数�
 
 ---
 - 参数：
-   - {Object} position 数字砖的位置信息 {x: posX, y: posY}
+   - {Object} position 数字砖的位置信息 {posX: x, posY: y}
    - {Number} value 数字砖的数值
 - 返回值：无
 - 描述：绘制数字砖
@@ -132,6 +133,15 @@ Tile对象是所有DOM对象的操作接口，包括数字砖的创建、数�
 - 参数：无,
 - 返回值：无
 - 描述：移除容器中的数字砖对象
+
+**moveTile(oldPosition, newPosition)**
+
+---
+- 参数：
+   - {Object} oldPosition 将要移动的单元格位置 {posX: x, posY: y}
+   - {Object} newPosition 移动目标 {posX: x, posY: y}
+- 返回值：无
+- 描述：将原单元格移动到新的位置
 
 ## KeyboardManager
 KeyboardManager对象监听了用户操作相关的事件，其中包括键盘输入与触屏
