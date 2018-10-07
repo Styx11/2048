@@ -36,13 +36,13 @@ var keyCallback = function (key) {// 操作触发事件
         for (let i=0; i<drawCells.length; i++) {
           tile.createTile(drawCells[i], drawCells[i].value);
         }
-        start();
-        console.log(grid.cells);
-        console.log(moveCells);
+        if (moveCells.length) {
+          start();
+        }
         localStorageManager.setGameState('gameState', grid.cells);// 记录状态
         localStorageManager.setGameState('gameScore', previousScore);
         grid.score = 0;// 重置分数
-      }, 300)// 等待移动动画
+      }, 200)// 等待移动动画
     }
   }
 }
