@@ -16,35 +16,40 @@ var start = function () {// 基本开始
   tile.scoreTile.innerHTML = previousScore;
 }
 var keyCallback = function (key) {// 操作触发事件
-  if (key === 0 || key === 2 || key === 1 || key === 3) {
-    var randomCell = grid.randomCell();
-    if (randomCell !== undefined) {
-      var moveCells = grid.moveCells(key);// 移动
-      if (grid.score) {// 记录分数
-        previousScore += grid.score;
-        if (previousScore > bestScore) {// 设置最高分
-          bestScore = previousScore;
-          localStorageManager.setBestScore(previousScore);
-        }
-      }
-      moveCells.forEach(function (item) {
-          tile.moveTile(item.delCell, item.redrawCell);
-      })
-      setTimeout(function () {
-        tile.delTile();
-        var drawCells = grid.availableCells().unavail;
-        for (let i=0; i<drawCells.length; i++) {
-          tile.createTile(drawCells[i], drawCells[i].value);
-        }
-        if (moveCells.length) {
-          start();
-        }
-        localStorageManager.setGameState('gameState', grid.cells);// 记录状态
-        localStorageManager.setGameState('gameScore', previousScore);
-        grid.score = 0;// 重置分数
-      }, 200)// 等待移动动画
-    }
+  if (KeyboardManager.timer) {
+    clearTimeout(KeyboardManager.timer);
   }
+  KeyboardManager.timer = setTimeout(function () {
+    if (key === 0 || key === 2 || key === 1 || key === 3) {
+      var randomCell = grid.randomCell();
+      if (randomCell !== undefined) {
+        var moveCells = grid.moveCells(key);// 移动
+        if (grid.score) {// 记录分数
+          previousScore += grid.score;
+          if (previousScore > bestScore) {// 设置最高分
+            bestScore = previousScore;
+            localStorageManager.setBestScore(previousScore);
+          }
+        }
+        moveCells.forEach(function (item) {
+            tile.moveTile(item.delCell, item.redrawCell);
+        })
+        setTimeout(function () {
+          tile.delTile();
+          var drawCells = grid.availableCells().unavail;
+          for (let i=0; i<drawCells.length; i++) {
+            tile.createTile(drawCells[i], drawCells[i].value);
+          }
+          if (moveCells.length) {
+            start();
+          }
+          localStorageManager.setGameState('gameState', grid.cells);// 记录状态
+          localStorageManager.setGameState('gameScore', previousScore);
+          grid.score = 0;// 重置分数
+        }, 200)// 等待移动动画
+      }
+    }
+  }, 100)
 }
 
 if (previousState) {// 是否应用先前状态

@@ -11,6 +11,7 @@ function eventPreventDefault (event) {
 function KeyboardManager () {
   this.events = {};
   this.start = {};
+  this.timer = {};
   this.end = {};
   this.listen();
 }
