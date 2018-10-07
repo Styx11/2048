@@ -4,7 +4,7 @@
 
 ### 如果您想参与编写，以下API可以帮您快速了解我的编程思路
 ## Grid
-Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互的直接渠道。类似于VirtualDOM的设计思想，我们并不直接频繁地操作DOM对象，而是通过栅格系统操作、记录每个单元格的位置信息与相对位置。
+Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互的直接渠道。类似于VirtualDOM的设计思想，我们并不直接频繁地操作DOM对象，而是通过栅格系统操作、记录每个单元格的位置信息与相对位置。
 ## *构造函数*
 **Grid(size)**
 
@@ -45,17 +45,17 @@ Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互�
 
 ---
 - 参数：无,
-- 返回值：{Object} {x: posX, y: posY, value: value}其中，x 和 y 表示单元格的坐标值，value表示其携带的数值
+- 返回值：{Object} {x: posX, y: posY, value: value}其中，x 和 y 表示单元格的坐标值，value表示其携带的数值
 - 描述：随机获取可用单元格
 
 **availableCells()**
 
 ---
 - 参数：无,
-- 返回值：{Object} 
-   - avail {Array}：返回未用单位格位置 {x: posX, y: posY} 组成的数组
-   - unavail {Array}：返回已占用单元格 {x: posX, y: posY, value: value} 组成的数组
-- 描述：返回包含单元格状态的对象
+- 返回值：{Object}
+   - avail {Array} 返回未用单位格位置 {x: posX, y: posY} 组成的数组
+   - unavail {Array} 返回已占用单元格 {x: posX, y: posY, value: value} 组成的数组
+- 描述：返回包含单元格状态的对象
 
 **availableCellInline(cell, end, line)**
 
@@ -64,7 +64,7 @@ Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互�
    - {Object} cell 期望获取可用目标的单元格 {x: posX, y: posY, value: value}
    - {Number} end 搜索的结束索引
    - {String} "row"|"col" line 期望搜索行或列
-- 返回值：{Object} 搜索结果值 {x: posX, y: posY, value: value}
+- 返回值：{Object} 搜索结果值 {x: posX, y: posY, value: value}
 - 描述：当进行移动时搜索单元格可达到的位置
 
 **updataCell(type, position, value)**
@@ -73,7 +73,7 @@ Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互�
 - 参数：
    - {String} "fill"|"remove" type 操作类型
    - {Object} 更新的位置 {x: posX, y: posY}
-   - {Number} 更新值
+   - {Number} 更新值
 - 返回值：无
 - 描述：更新单元格状态
 
@@ -83,10 +83,10 @@ Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互�
 - 参数：{Number} key keyCode,
 - 返回值：
    - {Array} moveCells 包含一个由移动单元格与目标单元格组成的数组
-- 描述：根据key值移动单元格
+- 描述：根据key值移动单元格
 
 ## Tile
-Tile对象是所有DOM对象的操作接口，包括数字砖的创建、数值更改、链接功能键以及数字砖的特效
+Tile对象是所有DOM对象的操作接口，包括数字砖的创建、数值更改、链接功能键以及数字砖的特效
 
 ## *属性*
 **container**
@@ -108,7 +108,7 @@ Tile对象是所有DOM对象的操作接口，包括数字砖的创建、数�
 ---
 - 类型：Object,
 - 默认值：DOM对象
-- 描述：记录历史最高分的数字砖
+- 描述：记录历史最高分的数字砖
 
 **newGame**
 

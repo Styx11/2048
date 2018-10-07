@@ -26,7 +26,7 @@ body {
     height: 100vh;
   }
 }
-#container {
+#container, .cover-container {
   position: absolute;
   overflow: hidden;
   top: 5rem;
@@ -36,14 +36,14 @@ body {
   background-color: rgb(186, 175, 163);
 }
 @media only screen and (max-width: 1024px) {
-  #container {
+  #container, .cover-container {
     top: 6.5rem;
     width: 100%;
     height: 10rem;
   }
 }
 @media only screen and (max-width: 414px) {
-  #container {
+  #container, .cover-container {
     top: 4rem;
     width: 100%;
     height: 5.7rem;
@@ -69,6 +69,10 @@ body {
   -o-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
   -webkit-transition: all 0.4s ease-in-out;
+}
+.cover-container .cover-tile {
+  z-index: 1;
+  background-color: rgb(202, 193, 181);
 }
 /* tile-position-y-x */
 @media only screen and (max-width: 414px) {
