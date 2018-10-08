@@ -4,6 +4,7 @@ Tile.prototype.container = document.getElementById('container');
 Tile.prototype.scoreTile = document.getElementById('score');
 Tile.prototype.bestTile  = document.getElementById('best');
 Tile.prototype.newGame   = document.getElementById('game-newGame');
+Tile.prototype.gameOver  = document.getElementById('cover-button');
 // 根据randomCell创建瓦片
 Tile.prototype.createTile = function (position, value) {
   var specialColors = {

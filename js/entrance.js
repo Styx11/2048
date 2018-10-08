@@ -28,6 +28,14 @@ var keyCallback = function (key) {// 操作触发事件
   }
   KeyboardManager.timer = setTimeout(function () {
     var moveCells = grid.moveCells(key);// 移动
+    var gameOver = 0;
+    for (let i=0; i<4; i++) {
+      gameOver += grid.moveCells(i, true).length;
+    }
+    if (!gameOver) {
+      tile.gameOver.parentElement.style.display = 'flex';
+      return;
+    }
     if (!moveCells.length) return;// 若当前方向栅格无法移动，则返回
     if (grid.score) {// 记录分数
       previousScore += grid.score;
@@ -67,8 +75,9 @@ if (previousState) {// 是否应用先前状态
 // 游戏重开
 tile.newGame.addEventListener('click', restart);
 // tile.gameOver.addEventListener('click', function () {
-//   restart();
-//   this.style.display = 'none';
+//   // restart();
+//   this.parentElement.style.display = 'none';
+//   console.log('hi');
 // })
 KeyboardManager.on("move", keyCallback);
 KeyboardManager.on("touch", keyCallback);
