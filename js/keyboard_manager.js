@@ -33,7 +33,6 @@ KeyboardManager.prototype.emit = function (event, data) {
 }
 KeyboardManager.prototype.listen = function () {
   var that = this;
-  var container = document.getElementById('container');
   var map = {
     37: 0, //Left Arrow
     38: 1, //Up Arrow
@@ -48,22 +47,22 @@ KeyboardManager.prototype.listen = function () {
   document.addEventListener('keydown', function (event) {
     var modifier = event.altKey || event.shiftKey || event.ctrlKey || event.metaKey;
     var mapped = map[event.keyCode];
-    if (!modifier) {
+    if (!modifier && mapped !== undefined) {
       eventPreventDefault(event);
       that.emit("move", mapped);
     }
   })
 
-  container.addEventListener('touchstart', function (event) {
+  document.addEventListener('touchstart', function (event) {
     // 之后需对兼容性进行升级
     that.start.x = event.touches[0].clientX;
     that.start.y = event.touches[0].clientY;
     eventPreventDefault(event);
   })
-  container.addEventListener('touchmove', function (event) {
+  document.addEventListener('touchmove', function (event) {
     eventPreventDefault(event);
   })
-  container.addEventListener('touchend', function (event) {
+  document.addEventListener('touchend', function (event) {
     // 手指都离开屏幕之后，touches和targetTouches中将不会再有值，changedTouches还会有一个值，
     // 此值为最后一个离开屏幕的手指的接触点。
     that.end.x = event.changedTouches[0].clientX;

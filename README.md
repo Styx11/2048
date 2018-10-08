@@ -45,7 +45,7 @@ Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互�
 
 ---
 - 参数：无,
-- 返回值：{Object} {x: posX, y: posY, value: value}其中，x 和 y 表示单元格的坐标值，value表示其携带的数值
+- 返回值：{Object} {x: posX, y: posY, value: value}其中，x 和 y 表示单元格的坐标值，value为随机携带的数值
 - 描述：随机获取可用单元格
 
 **availableCells()**
@@ -77,13 +77,14 @@ Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互�
 - 返回值：无
 - 描述：更新单元格状态
 
-**moveCells(key)**
+**moveCells(key, imitate)**
 
 ---
 - 参数：{Number} key keyCode,
 - 返回值：
    - {Array} moveCells 包含一个由移动单元格与目标单元格组成的数组
-- 描述：根据key值移动单元格
+   - {Boolean} imitate 是否模拟移动栅格
+- 描述：根据key值移动单元格，当imitat为true时只返回moveCells
 
 ## Tile
 Tile对象是所有DOM对象的操作接口，包括数字砖的创建、数值更改、链接功能键以及数字砖的特效

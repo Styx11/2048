@@ -22,7 +22,9 @@ Grid.prototype.randomCell = function () {
   var availableCells = this.availableCells().avail;
   var availLength = availableCells.length;
   var index = Math.floor(Math.random() * availLength);
+  var value = Math.floor(Math.random() * 2 + 1) * 2;// 随机数值
   var randomCell = availableCells[index];
+  randomCell.value = value;
   return randomCell;
 }
 // 获取可用单元格
@@ -36,7 +38,6 @@ Grid.prototype.availableCells = function () {
           avail.push({
             posX: posX,
             posY: posY,
-            value: 2
           })
         } else {
           unavail.push(item)
@@ -106,7 +107,7 @@ Grid.prototype.updataCell = function (type, position, value) {
   }
 }
 // 移动栅格
-Grid.prototype.moveCells = function (key) {
+Grid.prototype.moveCells = function (key, imitate) {
   var moveCells = [];
   // 判断从哪个方向开始移动
   var start = key===2 || key===3 ? 3 : 0;
@@ -123,8 +124,10 @@ Grid.prototype.moveCells = function (key) {
               redrawCell: avail,
               delCell: this.cells[y][start]
             })
-            this.updataCell('remove', {posX: start, posY: y});
-            this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value);
+            if (!imitate) {// 模拟移动是并不操作栅格
+              this.updataCell('remove', {posX: start, posY: y});
+              this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value);
+            }
           }
         }
       }
@@ -141,8 +144,10 @@ Grid.prototype.moveCells = function (key) {
               redrawCell: avail,
               delCell: this.cells[start][x]
             })
-            this.updataCell('remove', {posX: x, posY: start});
-            this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value);
+            if (!imitate) {// 模拟移动是并不操作栅格
+              this.updataCell('remove', {posX: x, posY: start});
+              this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value);
+            }
           }
         }
       }
