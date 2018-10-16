@@ -25,6 +25,7 @@ Grid.prototype.randomCell = function () {
   var value = Math.floor(Math.random() * 2 + 1) * 2;// 随机数值
   var randomCell = availableCells[index];
   randomCell.value = value;
+  randomCell.new = false;
   return randomCell;
 }
 // 获取可用单元格
@@ -60,12 +61,13 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
   if (line === 'row') {
     var x = posX < end ? posX+1 : posX-1;// 判断起终点
     var newEnd = posX < end ? end+1 : end-1;
-    while (x !== newEnd) {
-      if (!this.cells[posY][x] || this.cells[posY][x].value === value) {
+    while (x !== newEnd) {// 判断单元格是否是为新增单元格
+      if (!this.cells[posY][x] || (this.cells[posY][x].value === value && !this.cells[posY][x].new)) {
         availableCellInline = {
           posX: x,
           posY: posY,
-          value: !this.cells[posY][x] ? value : value * 2
+          value: !this.cells[posY][x] ? value : value * 2,
+          new: !this.cells[posY][x] ? false : true
         }// 记录分数
         this.score += !this.cells[posY][x] ? 0 : value * 2;
       } else {
@@ -77,11 +79,12 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
     var y = posY < end ? posY+1 : posY-1;
     var newEnd = posY < end ? end+1 : end-1;
     while (y !== newEnd) {
-      if (!this.cells[y][posX] || this.cells[y][posX].value === value) {
+      if (!this.cells[y][posX] || (this.cells[y][posX].value === value && !this.cells[y][posX].new)) {
         availableCellInline = {
           posX: posX,
           posY: y,
-          value: !this.cells[y][posX] ? value : value * 2
+          value: !this.cells[y][posX] ? value : value * 2,
+          new: !this.cells[y][posX] ? false : true
         }
         this.score += !this.cells[y][posX] ? 0 : value * 2;
       } else {
@@ -93,7 +96,7 @@ Grid.prototype.availableCellInline = function (cell, end, line) {
   return availableCellInline;
 }
 // 更新栅格状态
-Grid.prototype.updataCell = function (type, position, value) {
+Grid.prototype.updataCell = function (type, position, value, newCell) {
   var posX = position.posX;
   var posY = position.posY;
   if (type === 'remove') {
@@ -102,7 +105,8 @@ Grid.prototype.updataCell = function (type, position, value) {
     this.cells[posY][posX] = {
       posX: posX,
       posY: posY,
-      value: value
+      value: value,// 新增单元格状态
+      new: newCell ? true : false
     }
   }
 }
@@ -113,6 +117,15 @@ Grid.prototype.moveCells = function (key, imitate) {
   var start = key===2 || key===3 ? 3 : 0;
   var end = key===2 || key===3 ? -1 : 4;
 
+  if (!imitate) {// 非模拟状态下清空新单元格状态
+    this.cells.forEach(function (items) {
+      items.forEach(function (item) {
+        if (item && item.new) {
+          item.new = false;
+        }
+      })
+    })
+  }
   if (key === 0 || key === 2) {// 左右
     var direct = !key ? 0 : 3;
     while (start !== end) {
@@ -126,7 +139,7 @@ Grid.prototype.moveCells = function (key, imitate) {
             })
             if (!imitate) {// 模拟移动是并不操作栅格
               this.updataCell('remove', {posX: start, posY: y});
-              this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value);
+              this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value, avail.new);
             }
           }
         }
@@ -146,7 +159,7 @@ Grid.prototype.moveCells = function (key, imitate) {
             })
             if (!imitate) {// 模拟移动是并不操作栅格
               this.updataCell('remove', {posX: x, posY: start});
-              this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value);
+              this.updataCell('fill', {posX: avail.posX, posY: avail.posY}, avail.value, avail.new);
             }
           }
         }
