@@ -4,7 +4,7 @@
 
 你可以👉[点此试玩](https://styx11.github.io/2048/)
 
-### 如果您想参与编写，以下API可以帮您快速了解我的编程思路
+### 以下API可以帮您快速了解我的编程思路
 ## Grid
 Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互的渠道。我们并不直接频繁地操作DOM对象，而是通过栅格系统操作、记录每个单元格的位置信息与相对位置。
 ## *构造函数*
@@ -70,13 +70,14 @@ Gird栅格对象是游戏的核心部分，它直接作为用户与页面交互�
 - 返回值：{Object} 搜索结果值 {x: posX, y: posY, value: value}
 - 描述：当进行移动时搜索单元格可达到的位置
 
-**updataCell(type, position, value)**
+**updataCell(type, position, value, newCell)**
 
 ---
 - 参数：
    - {String} "fill"|"remove" type 操作类型
    - {Object} 更新的位置 {x: posX, y: posY}
    - {Number} 更新值
+   - {Boolean} newCell 是否为新建单元格
 - 返回值：无
 - 描述：更新单元格状态
 
